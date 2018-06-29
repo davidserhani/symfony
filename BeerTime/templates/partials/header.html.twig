@@ -1,12 +1,13 @@
-<body class="text-center">
 
-<div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <header class="masthead mb-auto">
-        <div class="inner">
-            <h3 class="masthead-brand">Cover</h3>
-            <nav class="nav nav-masthead justify-content-center">
-                <a class="nav-link active" href="{{ path('home') }}">Home</a>
-                <a class="nav-link" href="{{ path('event_list') }}">Events</a>
-            </nav>
-        </div>
-    </header>
+<body>
+
+<div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+    <h5 class="my-0 mr-md-auto font-weight-normal"><a class="navbar-brand text-warning" href="{{ path('home') }}"><span id="emoji">🍻</span>BeerTime</a></h5>
+    <nav class="my-2 my-md-0 mr-md-3">
+        <a class="p-2 text-dark" href="{{ path('event_list') }}">Events</a>
+        <a class="p-2 text-dark" href="{{ path('event_create') }}">Create</a>
+        <a class="p-2 text-dark" href="{{ path('event_random') }}">I'm so thirsty</a>
+    </nav>
+    <a class="btn btn-outline-primary" href="#">Sign up</a>
+</div>
+<div class="container">
