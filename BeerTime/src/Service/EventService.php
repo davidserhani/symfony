@@ -9,11 +9,19 @@
 namespace App\Service;
 
 
+
+use Doctrine\ORM\EntityManagerInterface;
+
 class EventService
 {
     private $events;
 
-    public function __construct()
+
+    /**
+     * EventService constructor.
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager )
     {
         $this->events = array(
             [ 'id' => 1, 'name' => 'OktoberTwist', 'description' => 'You love autumn, you love tourtel Twist... enjoy The OktoberTwist', 'address' => '3 albert street', 'city' => 'Lille', 'zip' => '5900', 'country' => 'fr', 'capacity' => 10, 'start_at' => new \DateTime('2018-06-20 19:00:00'), 'end_at' => new \DateTime( '2018-06-21 06:00:00'), 'poster' => 'https://www.sportsmarketing.fr/wp-content/uploads/2016/02/tourtel-twist-groupe-carlsberg.jpg', 'price' => 'free', 'owner' => 'Fabious'],

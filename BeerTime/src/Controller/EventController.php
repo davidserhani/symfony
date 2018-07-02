@@ -42,7 +42,8 @@ class EventController extends Controller
                     'event' => $event
                 ]);
             }
-        return new Response("Wrong page", 404);
+        return $this->render('main/error.html.twig', [
+            'status' => 404]);
     }
     /**
      * @Route("/event/create", name="event_create")
@@ -59,6 +60,8 @@ class EventController extends Controller
 
     /**
      * @Route("/need-a-beer", name="event_random")
+     * @param EventService $eventService
+     * @return Response
      */
     public function random( EventService $eventService ) {
         $event = $eventService->getRandom();
@@ -67,6 +70,7 @@ class EventController extends Controller
                 'event' => $event
             ]);
         }
-        return new Response("Wrong page", 404);
+        return $this->render('main/error.html.twig', [
+            'status' => 404]);
     }
 }
