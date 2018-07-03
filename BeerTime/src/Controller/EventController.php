@@ -12,6 +12,7 @@ namespace App\Controller;
 use App\Service\EventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class EventController extends Controller
@@ -20,12 +21,21 @@ class EventController extends Controller
     /**
      * @Route("/events", name="event_list")
      * @param EventService $eventService
+     * @param Request $request
      * @return Response
      */
-    public function list( EventService $eventService ) {
+    public function list(EventService $eventService, Request $request) {
+        $search = $request->query->get('search');
+        if ( !empty($search) ) {
+            return $this->render('event/events.html.twig', [
+                'events' => $eventService->getByName($search),
+                'future' => $eventService->futurEvents()
+            ]);
+        }
+        $sort = !empty($request->query->get('sort')) ? $request->query->get('sort') : 'id';
         return $this->render('event/events.html.twig', [
-            'events' => $eventService->getAll(),
-            'title' => 'Events'
+            'events' => $eventService->getAll($sort),
+            'future' => $eventService->futurEvents()
             ]);
     }
 
@@ -37,7 +47,7 @@ class EventController extends Controller
      */
     public function ShowEvent( EventService $eventService, $id) {
         $event = $eventService->get($id);
-            if ( $event ) {
+            if ( !empty($event) ) {
                 return $this->render('event/single_event.html.twig', [
                     'event' => $event
                 ]);

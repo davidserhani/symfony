@@ -69,6 +69,12 @@ class TableEvent
      */
     private $category;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Place", inversedBy="eventPlace")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $place;
+
     public function __construct()
     {
         $this->registration = new ArrayCollection();
@@ -224,6 +230,18 @@ class TableEvent
         if ($this->category->contains($category)) {
             $this->category->removeElement($category);
         }
+
+        return $this;
+    }
+
+    public function getPlace(): ?Place
+    {
+        return $this->place;
+    }
+
+    public function setPlace(?Place $place): self
+    {
+        $this->place = $place;
 
         return $this;
     }

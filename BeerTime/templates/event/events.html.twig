@@ -1,22 +1,41 @@
-{% extends 'base.html.twig' %}
+{% extends 'base.html.twig.' %}
 
 {% block body %}
-
+    {%  if events|length > 0  %}
+        <div class="alert alert-success" role="alert">
+            🌭 {{ future }} event(s) to come!
+        </div>
+        <div class="container text-center mb-3">
+            <div class="btn-group btn-group-toggle">
+                    <a class="btn btn-secondary active" href="{{ path('event_list', {'sort': 'name'}) }}" role="button">Name</a>
+                    <a class="btn btn-secondary" href="{{ path('event_list', {'sort': 'startAt'}) }}" role="button">Date</a>
+            </div>
+        </div>
     {% for event in events %}
         <div class="card-deck mb-3 text-center">
             <div class="card mb-4 box-shadow">
                 <div class="card-header">
-                    <h4 class="my-0 font-weight-normal">{% if date() < event.start_at  %}Coming soon{% elseif date() > event.end_at %}Too Late{% else %}Now{% endif %}</h4>
+                    <h4 class="my-0 font-weight-normal">{% if date() < event.startAt  %}Coming soon⌛{% elseif date() > event.endAt %}Too Late⛔{% else %}Now⚡{% endif %}</h4>
                 </div>
                 <div class="card-body">
                     <h1 class="card-title pricing-card-title">{{ event.name }}</h1>
                     <ul class="list-unstyled mt-3 mb-4">
-                        <li>🌭Start on the {{ event.start_at|date('j F Y \\a\\t H:i') }} till the {{ event.end_at|date('j F Y H:i') }}</li>
-                        <li>🌭Rockin' {{ event.city }}</li>
+                        <li>🏁Start on the {{ event.startAt|date('j F Y \\a\\t H:i') }} till the {{ event.endAt|date('j F Y H:i') }}</li>
+                        <li>🏛️Rockin' {{ event.place.city }} in {{ event.place.country }}</li>
                     </ul>
                     <a class="btn btn-lg btn-block btn-outline-warning" href="{{ path('event_show', {'id':event.id}) }}">Check it out</a>
                 </div>
             </div>
         </div>
     {% endfor %}
+    {% else %}
+        <div class="container text-center">
+            <div class="alert alert-info" role="alert">
+                ⚠️ no event!
+            </div>
+            <hr>
+            <iframe src="https://giphy.com/embed/6Q2KA5ly49368" width="480" height="339" frameBorder="0" class="giphy-embed" allowFullScreen></iframe><p><a href="https://giphy.com/gifs/no-seinfeld-cinemagraph-6Q2KA5ly49368">via GIPHY</a></p>
+        </div>
+
+    {% endif %}
 {% endblock %}

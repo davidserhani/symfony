@@ -9,15 +9,15 @@
     <div class="media">
         <img class="align-self-start mr-3" src="{{ event.poster }}" alt="Generic placeholder image">
         <div class="media-body">
-            <h4 class="my-0 font-weight-normal">{% if date() < event.start_at  %}Coming soon{% elseif date('now', 'Europe/Paris') > event.end_at %}Too Late{% else %}Now{% endif %}</h4>
+            <h4 class="my-0 font-weight-normal">{% if date() < event.startAt  %}Coming soon⌛{% elseif date('now', 'Europe/Paris') > event.endAt %}Too Late⛔{% else %}Now⚡{% endif %}</h4>
             <h1 class="mt-0">{{ event.name }}</h1>
             <ul class="list-unstyled mt-3 mb-4">
-                <li>🍕{{ event.description }}</li>
-                <li>🍕{{ event.city }}</li>
-                <li>🍕Organize by : {{ event.owner }}</li>
-                <li>🍕Price : {{ event.price }}</li>
+                <li>💬{{ event.description }}</li>
+                <li>🏛️{{ event.place.city }}</li>
+                <li>🤵Organize by : {{ event.owner.username }}</li>
+                <li>💸Price : {{ (event.price ? '<span class="badge badge-primary">' ~ event.price ~ '💲' ~'</span>' : '<span class="badge badge-success">Free</span>') | raw  }} </li>
             </ul>
-            <a class="{% if date('now', 'Europe/Paris') > date(event.end_at)%} btn btn-secondary btn-sm disabled {% else %} btn btn-sm btn-block btn-outline-warning {% endif %}" href="{{ path('event_join', {'id':event.id}) }}" >Join</a>
+            <a class="{% if date('now', 'Europe/Paris') > date(event.endAt)%} btn btn-secondary btn-sm disabled {% else %} btn btn-sm btn-block btn-outline-warning {% endif %}" href="{{ path('event_join', {'id':event.id}) }}" >Join</a>
         </div>
     </div>
 

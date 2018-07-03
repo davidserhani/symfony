@@ -10,12 +10,15 @@ namespace App\Service;
 
 
 
+use App\Entity\TableEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+
 
 class EventService
 {
-    private $events;
-
+    private $entityManager;
+    private $repository;
 
     /**
      * EventService constructor.
@@ -23,38 +26,45 @@ class EventService
      */
     public function __construct(EntityManagerInterface $entityManager )
     {
-        $this->events = array(
-            [ 'id' => 1, 'name' => 'OktoberTwist', 'description' => 'You love autumn, you love tourtel Twist... enjoy The OktoberTwist', 'address' => '3 albert street', 'city' => 'Lille', 'zip' => '5900', 'country' => 'fr', 'capacity' => 10, 'start_at' => new \DateTime('2018-06-20 19:00:00'), 'end_at' => new \DateTime( '2018-06-21 06:00:00'), 'poster' => 'https://www.sportsmarketing.fr/wp-content/uploads/2016/02/tourtel-twist-groupe-carlsberg.jpg', 'price' => 'free', 'owner' => 'Fabious'],
-            [ 'id' => 2, 'name' => 'ElleFlex', 'description' => 'Work out while sippin beers and listening to Corona', 'address' => '666 WeissWurst Straat', 'city' => 'Munchen', 'zip' => '1897', 'country' => 'ge', 'capacity' => 50, 'start_at' => new \DateTime('2018-06-29 8:00:00'), 'end_at' => new \DateTime('2018-06-29 23:00:00'), 'poster' => 'http://www.rtvbn.com/assets/img/27-06-2017/8fe1440ec5a0b675949cca06329723c5.jpg', 'price' => 'free', 'owner' => 'Fabious' ]
-        );
+        $this->entityManager = $entityManager;
+        $this->repository = $entityManager->getRepository(TableEvent::class);
     }
 
     /**
      * @Route("/events", name="event_list")
      */
-    public function getAll() {
-        return $this->events;
+    public function getAll($sort = 'id') {
+        return $this->repository->findby(array(), [$sort => 'ASC']);
     }
+
     /**
      * @Route("/event/{id}", name="event_show", requirements={"id"="\d+"})
+     * @param $id
+     * @return TableEvent|null|object
      */
     public function get($id) {
-        foreach ($this->events as $event) {
-            if ($event['id'] == $id) {
+        return $this->repository->find($id);
+    }
+    public function getRandom() {
+        $events = $this->getAll();
+        shuffle( $events );
+        $now = new \DateTime();
+
+        foreach ( $events as $event ) {
+            if ( $event->getStartAt() <= $now AND $event->getEndAt() > $now ) {
                 return $event;
             }
         }
         return false;
     }
-    public function getRandom() {
-        $events = $this->events;
-        shuffle( $events );
-        $now = new \DateTime();
-        foreach ( $events as $event ) {
-            if ( $event['start_at'] <= $now AND $event['end_at'] > $now ) {
-                return $event;
-            }
-        }
-        return false;
+
+    public function getByName($name)
+    {
+        return $this->repository->findByName($name);
+    }
+
+    public function futurEvents()
+    {
+        return $this->repository->futureEvents();
     }
 }

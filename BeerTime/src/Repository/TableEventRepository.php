@@ -47,4 +47,24 @@ class TableEventRepository extends ServiceEntityRepository
         ;
     }
     */
+    public function findByName($name)
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.name LIKE :name')
+            ->setParameter('name', '%'.$name. '%')
+            ->getQuery()
+            ->getResult()
+            ;
+    }
+    public function futureEvents(): int
+    {
+        return $this->createQueryBuilder('e')
+            ->select('COUNT(e.id)')
+            ->andWhere('e.startAt > CURRENT_TIME()')
+//            ->andWhere('e.startAt > :now')
+//            ->setParameters('now', \DateTime())
+            ->getQuery()
+            ->getSingleScalarResult()
+            ;
+    }
 }

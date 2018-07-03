@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -35,6 +37,21 @@ class Place
      * @ORM\Column(type="string", length=5)
      */
     private $zipCode;
+
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\TableEvent", mappedBy="place")
+     */
+    private $eventPlace;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $country;
+
+    public function __construct()
+    {
+        $this->eventPlace = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -85,6 +102,49 @@ class Place
     public function setZipCode(string $zipCode): self
     {
         $this->zipCode = $zipCode;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|TableEvent[]
+     */
+    public function getEventPlace(): Collection
+    {
+        return $this->eventPlace;
+    }
+
+    public function addEventPlace(TableEvent $eventPlace): self
+    {
+        if (!$this->eventPlace->contains($eventPlace)) {
+            $this->eventPlace[] = $eventPlace;
+            $eventPlace->setPlace($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEventPlace(TableEvent $eventPlace): self
+    {
+        if ($this->eventPlace->contains($eventPlace)) {
+            $this->eventPlace->removeElement($eventPlace);
+            // set the owning side to null (unless already changed)
+            if ($eventPlace->getPlace() === $this) {
+                $eventPlace->setPlace(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getCountry(): ?string
+    {
+        return $this->country;
+    }
+
+    public function setCountry(string $country): self
+    {
+        $this->country = $country;
 
         return $this;
     }
