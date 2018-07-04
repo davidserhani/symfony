@@ -15,7 +15,7 @@
                 <li>💬{{ event.description }}</li>
                 <li>🏛️{{ event.place.city }}</li>
                 <li>🤵Organize by : {{ event.owner.username }}</li>
-                <li>💸Price : {{ (event.price ? '<span class="badge badge-primary">' ~ event.price ~ '💲' ~'</span>' : '<span class="badge badge-success">Free</span>') | raw  }} </li>
+                <li>💸Price : {{ (event.price ? '<span class="badge badge-secondary">' ~ event.price ~ '💲' ~'</span>' : '<span class="badge badge-success">Free</span>') | raw  }} </li>
             </ul>
             <a class="{% if date('now', 'Europe/Paris') > date(event.endAt)%} btn btn-secondary btn-sm disabled {% else %} btn btn-sm btn-block btn-outline-warning {% endif %}" href="{{ path('event_join', {'id':event.id}) }}" >Join</a>
         </div>

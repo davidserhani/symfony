@@ -9,6 +9,8 @@
 namespace App\Controller;
 
 
+use App\Entity\TableEvent;
+use App\Form\FormType;
 use App\Service\EventService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -55,11 +57,26 @@ class EventController extends Controller
         return $this->render('main/error.html.twig', [
             'status' => 404]);
     }
+
     /**
      * @Route("/event/create", name="event_create")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function create() {
-        return new Response('Create an event');
+    public function create( Request $request ) {
+        $event = new TableEvent();
+        $form = $this->createForm(FormType::class, $event);
+        $form->handleRequest($request);
+        if ( $form->isSubmitted() AND $form->isValid() )
+        {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('home');
+        }
+        return $this->render('event/create.html.twig', [
+            'formEvent'=> $form->createView()
+        ]);
     }
     /**
      * @Route("/event/{id}/join", name="event_join", requirements={"id"="\d+"})
@@ -83,4 +100,5 @@ class EventController extends Controller
         return $this->render('main/error.html.twig', [
             'status' => 404]);
     }
+
 }

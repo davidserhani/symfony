@@ -5,7 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-
+use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="App\Repository\TableEventRepository")
  */
@@ -24,16 +24,20 @@ class TableEvent
     private $name;
 
     /**
+     * @Assert\length(min=3)
      * @ORM\Column(type="text")
      */
     private $description;
 
     /**
      * @ORM\Column(type="integer", nullable=true)
+     *
      */
     private $capacity;
 
     /**
+     * @Assert\DateTime()
+     * @Assert\GreaterThan("today")
      * @ORM\Column(type="datetime")
      */
     private $startAt;
@@ -49,6 +53,7 @@ class TableEvent
     private $price;
 
     /**
+     * @Assert\Url()
      * @ORM\Column(type="string", length=255)
      */
     private $poster;
