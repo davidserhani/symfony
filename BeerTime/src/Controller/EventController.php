@@ -9,9 +9,11 @@
 namespace App\Controller;
 
 
-use App\Entity\TableEvent;
-use App\Form\FormType;
+use App\Entity\Event;
+use App\Entity\User;
+use App\Form\EventType;
 use App\Service\EventService;
+use App\Service\UploadService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -61,18 +63,36 @@ class EventController extends Controller
     /**
      * @Route("/event/create", name="event_create")
      * @param Request $request
+     * @param UploadService $uploadService
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function create( Request $request ) {
-        $event = new TableEvent();
-        $form = $this->createForm(FormType::class, $event);
+    public function create( Request $request, UploadService $uploadService ) {
+        $event = new Event();
+        $form = $this->createForm(EventType::class, $event);
         $form->handleRequest($request);
         if ( $form->isSubmitted() AND $form->isValid() )
         {
+            if ( !empty( $event->getPosterFile() ) ) {
+                $file = $event->getPosterFile();
+                $fileName = $uploadService->upload($file);
+
+            } else {
+                $fileName = $event->getPosterUrl();
+            }
+            $event->setPoster($fileName);
+
             $em = $this->getDoctrine()->getManager();
+
+            $owner = $em->getRepository(User::class)->findOneBy( array() );
+            $event->setOwner($owner);
+
             $em->persist($event);
             $em->flush();
-            return $this->redirectToRoute('home');
+            $this->addFlash(
+              'success',
+              'Event created'
+            );
+            return $this->redirectToRoute('event_list');
         }
         return $this->render('event/create.html.twig', [
             'formEvent'=> $form->createView()

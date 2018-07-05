@@ -39,7 +39,7 @@ class Place
     private $zipCode;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TableEvent", mappedBy="place")
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="place")
      */
     private $eventPlace;
 
@@ -107,14 +107,14 @@ class Place
     }
 
     /**
-     * @return Collection|TableEvent[]
+     * @return Collection|Event[]
      */
     public function getEventPlace(): Collection
     {
         return $this->eventPlace;
     }
 
-    public function addEventPlace(TableEvent $eventPlace): self
+    public function addEventPlace(Event $eventPlace): self
     {
         if (!$this->eventPlace->contains($eventPlace)) {
             $this->eventPlace[] = $eventPlace;
@@ -124,7 +124,7 @@ class Place
         return $this;
     }
 
-    public function removeEventPlace(TableEvent $eventPlace): self
+    public function removeEventPlace(Event $eventPlace): self
     {
         if ($this->eventPlace->contains($eventPlace)) {
             $this->eventPlace->removeElement($eventPlace);

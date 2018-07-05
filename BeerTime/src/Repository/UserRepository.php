@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TableUser;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method TableUser|null find($id, $lockMode = null, $lockVersion = null)
- * @method TableUser|null findOneBy(array $criteria, array $orderBy = null)
- * @method TableUser[]    findAll()
- * @method TableUser[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method User|null find($id, $lockMode = null, $lockVersion = null)
+ * @method User|null findOneBy(array $criteria, array $orderBy = null)
+ * @method User[]    findAll()
+ * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TableUserRepository extends ServiceEntityRepository
+class UserRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, TableUser::class);
+        parent::__construct($registry, User::class);
     }
 
 //    /**
-//     * @return TableUser[] Returns an array of TableUser objects
+//     * @return User[] Returns an array of User objects
 //     */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TableUserRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TableUser
+    public function findOneBySomeField($value): ?User
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')

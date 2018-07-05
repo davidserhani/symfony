@@ -24,7 +24,7 @@ class Category
     private $name;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\TableEvent", mappedBy="category")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="category")
      */
     private $tableEvents;
 
@@ -56,14 +56,14 @@ class Category
     }
 
     /**
-     * @return Collection|TableEvent[]
+     * @return Collection|Event[]
      */
     public function getTableEvents(): Collection
     {
         return $this->tableEvents;
     }
 
-    public function addTableEvent(TableEvent $tableEvent): self
+    public function addTableEvent(Event $tableEvent): self
     {
         if (!$this->tableEvents->contains($tableEvent)) {
             $this->tableEvents[] = $tableEvent;
@@ -73,7 +73,7 @@ class Category
         return $this;
     }
 
-    public function removeTableEvent(TableEvent $tableEvent): self
+    public function removeTableEvent(Event $tableEvent): self
     {
         if ($this->tableEvents->contains($tableEvent)) {
             $this->tableEvents->removeElement($tableEvent);

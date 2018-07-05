@@ -10,9 +10,8 @@ namespace App\Service;
 
 
 
-use App\Entity\TableEvent;
+use App\Entity\Event;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Request;
 
 
 class EventService
@@ -27,11 +26,13 @@ class EventService
     public function __construct(EntityManagerInterface $entityManager )
     {
         $this->entityManager = $entityManager;
-        $this->repository = $entityManager->getRepository(TableEvent::class);
+        $this->repository = $entityManager->getRepository(Event::class);
     }
 
     /**
      * @Route("/events", name="event_list")
+     * @param string $sort
+     * @return Event[]|array
      */
     public function getAll($sort = 'id') {
         return $this->repository->findby(array(), [$sort => 'ASC']);
@@ -40,22 +41,13 @@ class EventService
     /**
      * @Route("/event/{id}", name="event_show", requirements={"id"="\d+"})
      * @param $id
-     * @return TableEvent|null|object
+     * @return Event|null|object
      */
     public function get($id) {
         return $this->repository->find($id);
     }
     public function getRandom() {
-        $events = $this->getAll();
-        shuffle( $events );
-        $now = new \DateTime();
-
-        foreach ( $events as $event ) {
-            if ( $event->getStartAt() <= $now AND $event->getEndAt() > $now ) {
-                return $event;
-            }
-        }
-        return false;
+        return $this->repository->getRandom();
     }
 
     public function getByName($name)

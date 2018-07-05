@@ -2,25 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\TableEvent;
+use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Symfony\Bridge\Doctrine\RegistryInterface;
 
 /**
- * @method TableEvent|null find($id, $lockMode = null, $lockVersion = null)
- * @method TableEvent|null findOneBy(array $criteria, array $orderBy = null)
- * @method TableEvent[]    findAll()
- * @method TableEvent[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method Event|null find($id, $lockMode = null, $lockVersion = null)
+ * @method Event|null findOneBy(array $criteria, array $orderBy = null)
+ * @method Event[]    findAll()
+ * @method Event[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
-class TableEventRepository extends ServiceEntityRepository
+class EventRepository extends ServiceEntityRepository
 {
     public function __construct(RegistryInterface $registry)
     {
-        parent::__construct($registry, TableEvent::class);
+        parent::__construct($registry, Event::class);
     }
 
 //    /**
-//     * @return TableEvent[] Returns an array of TableEvent objects
+//     * @return Event[] Returns an array of Event objects
 //     */
     /*
     public function findByExampleField($value)
@@ -37,7 +37,7 @@ class TableEventRepository extends ServiceEntityRepository
     */
 
     /*
-    public function findOneBySomeField($value): ?TableEvent
+    public function findOneBySomeField($value): ?Event
     {
         return $this->createQueryBuilder('t')
             ->andWhere('t.exampleField = :val')
@@ -66,5 +66,11 @@ class TableEventRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult()
             ;
+    }
+    public function getRandom() {
+        $stmt = $this->createQueryBuilder('e');
+        $stmt->orderBy( 'RAND()' );
+        $stmt->setMaxResults( 1 );
+        return $stmt->getQuery()->getOneOrNullResult();
     }
 }

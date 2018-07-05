@@ -7,9 +7,9 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * @ORM\Entity(repositoryClass="App\Repository\TableUserRepository")
+ * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
  */
-class TableUser
+class User
 {
     /**
      * @ORM\Id()
@@ -54,12 +54,12 @@ class TableUser
     private $country;
 
     /**
-     * @ORM\OneToMany(targetEntity="App\Entity\TableEvent", mappedBy="owner", orphanRemoval=true)
+     * @ORM\OneToMany(targetEntity="App\Entity\Event", mappedBy="owner", orphanRemoval=true)
      */
     private $tableEvents;
 
     /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\TableEvent", mappedBy="registration")
+     * @ORM\ManyToMany(targetEntity="App\Entity\Event", mappedBy="registration")
      */
     private $events;
 
@@ -159,14 +159,14 @@ class TableUser
     }
 
     /**
-     * @return Collection|TableEvent[]
+     * @return Collection|Event[]
      */
     public function getTableEvents(): Collection
     {
         return $this->tableEvents;
     }
 
-    public function addTableEvent(TableEvent $tableEvent): self
+    public function addTableEvent(Event $tableEvent): self
     {
         if (!$this->tableEvents->contains($tableEvent)) {
             $this->tableEvents[] = $tableEvent;
@@ -176,7 +176,7 @@ class TableUser
         return $this;
     }
 
-    public function removeTableEvent(TableEvent $tableEvent): self
+    public function removeTableEvent(Event $tableEvent): self
     {
         if ($this->tableEvents->contains($tableEvent)) {
             $this->tableEvents->removeElement($tableEvent);
@@ -190,14 +190,14 @@ class TableUser
     }
 
     /**
-     * @return Collection|TableEvent[]
+     * @return Collection|Event[]
      */
     public function getEvents(): Collection
     {
         return $this->events;
     }
 
-    public function addEvent(TableEvent $event): self
+    public function addEvent(Event $event): self
     {
         if (!$this->events->contains($event)) {
             $this->events[] = $event;
@@ -207,7 +207,7 @@ class TableUser
         return $this;
     }
 
-    public function removeEvent(TableEvent $event): self
+    public function removeEvent(Event $event): self
     {
         if ($this->events->contains($event)) {
             $this->events->removeElement($event);
