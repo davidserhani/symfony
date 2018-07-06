@@ -5,9 +5,12 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
+ * @UniqueEntity("username")
  */
 class User
 {
@@ -19,26 +22,41 @@ class User
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $username;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\Email(
+     *     checkMX = true
+     *     )
      * @ORM\Column(type="string", length=255)
      */
     private $email;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\EqualTo(propertyPath="confirmPassword")
      * @ORM\Column(type="string", length=255)
      */
     private $password;
 
     /**
+     * @Assert\EqualTo(propertyPath="password")
+     */
+    private $confirmPassword;
+
+    /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=5)
      */
     private $zipCode;
 
     /**
+     * @Assert\NotBlank()
+     * @Assert\DateTime()
      * @ORM\Column(type="datetime")
      */
     private $birthdate;
@@ -49,6 +67,7 @@ class User
     private $role;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=255)
      */
     private $country;
@@ -99,13 +118,25 @@ class User
     }
 
     public function getPassword(): ?string
-    {
-        return $this->password;
-    }
+{
+    return $this->password;
+}
 
     public function setPassword(string $password): self
     {
         $this->password = $password;
+
+        return $this;
+    }
+
+    public function getConfirmPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    public function setConfirmPassword(string $confirmPassword): self
+    {
+        $this->confirmPassword = $confirmPassword;
 
         return $this;
     }

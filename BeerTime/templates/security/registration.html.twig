@@ -1,0 +1,18 @@
+{% extends 'base.html.twig' %}
+
+{% form_theme formRegistration 'bootstrap_4_layout.html.twig' %}
+
+{% block body %}
+
+    <h1>Registration🖋️</h1>
+
+    {{ form_start(formRegistration,
+        {'attr': {'novalidate' : 'novalidate'}}
+    )
+    }}
+
+    {{ form_widget(formRegistration) }}
+    <button class="btn btn-outline-success" type="submit">Subscribe✔️</button>
+    {{ form_end(formRegistration) }}
+
+{% endblock %}
